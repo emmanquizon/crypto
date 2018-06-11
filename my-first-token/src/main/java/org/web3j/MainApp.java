@@ -11,8 +11,10 @@ import org.web3j.crypto.Credentials;
 import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;
+import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.response.EthAccounts;
 import org.web3j.protocol.core.methods.response.EthBlock;
+import org.web3j.protocol.core.methods.response.EthGetBalance;
 import org.web3j.protocol.core.methods.response.EthGetTransactionReceipt;
 import org.web3j.protocol.core.methods.response.Transaction;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
@@ -21,6 +23,7 @@ import org.web3j.tx.Contract;
 import org.web3j.tx.ManagedTransaction;
 import org.web3j.tx.Transfer;
 import org.web3j.utils.Convert;
+import org.web3j.utils.Convert.Unit;
 import org.web3j.utils.Numeric;
 
 public class MainApp {
@@ -39,34 +42,46 @@ public class MainApp {
         log.info("Connected to Ethereum client version: "
                 + web3j.web3ClientVersion().send().getWeb3ClientVersion());
         
+        
         // We then need to load our Ethereum wallet file
         // FIXME: Generate a new wallet file using the web3j command line tools https://docs.web3j.io/command_line.html
+        System.out.println("====LOADING CREDENTIALS===================================================================================");
+
         Credentials credentials =
                 WalletUtils.loadCredentials(
                         "Eman##28",
                         "C:\\dev\\web3j-3.4.0\\keystore\\UTC--2018-06-04T07-55-09.397000000Z--fe755d7d1079194a3f0a63439796c9ed3554d219.json");
         log.info("Credentials loaded");
-        EthAccounts a =   web3j.ethAccounts().sendAsync().get();
-        	log.info(a.getAccounts() +"    ---");
-        	 for(String s :   a.getAccounts()) {
-             	
-             	log.info(s+" ===============");
-             }
         
-        	 /*       // FIXME: Request some Ether for the Rinkeby test network at https://www.rinkeby.io/#faucet
+        
+      //GETTING THE BALANCE
+        EthGetBalance bal = web3j.ethGetBalance(credentials.getAddress() , DefaultBlockParameterName.LATEST).send();
+        System.out.println("====GETTING CURRENT BALANCE===================================================================================");
+        log.info("CURRENT BALANCE : "+Convert.fromWei(bal.getBalance().toString(),Unit.ETHER));
+        	 
+        // FIXME: Request some Ether for the Rinkeby test network at https://www.rinkeby.io/#faucet
+        System.out.println("====SEND ETHER===================================================================================");
         log.info("Sending 1 Wei ("
                 + Convert.fromWei("1", Convert.Unit.ETHER).toPlainString() + " Ether)");
         TransactionReceipt transferReceipt = Transfer.sendFunds(
                 web3j, credentials,
-                "0x238Db2BCE0a7D50044F200375E56271308C45B98",  // you can put any address here
-                BigDecimal.valueOf(12565252350000000L), Convert.Unit.WEI)  // 1 wei = 10^-18 Ether
+                "0xf7D1666Aa7b70Be8Af3f21314A8178E09cc590a0",  // you can put any address here
+                BigDecimal.valueOf(0.5), Convert.Unit.ETHER)  // 1 wei = 10^-18 Ether
                 .send();
+        System.out.println("====TRANSACTION COMPLETE===================================================================================");
         log.info("Transaction complete, view it at https://rinkeby.etherscan.io/tx/"
                 + transferReceipt.getTransactionHash());
-        TODO EthGetBalance 
+        
+        
+        //GETTING THE BALANCE
+        EthGetBalance bal1 = web3j.ethGetBalance(credentials.getAddress() , DefaultBlockParameterName.LATEST).send();
+        System.out.println("====GETTING CURRENT BALANCE===================================================================================");
+        log.info("CURRENT BALANCE : "+Convert.fromWei(bal1.getBalance().toString(),Unit.ETHER));
+        
+        
         
         // Now lets deploy a smart contract
-        log.info("Deploying token");
+        System.out.println("====DEPLOYING TOKEN===================================================================================");
         TokenERC20 token1 = TokenERC20.deploy(
                 web3j, credentials,
                 ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT,
@@ -76,26 +91,39 @@ public class MainApp {
         log.info("Smart contract deployed to address " + contractAddress);
         log.info("View contract at https://rinkeby.etherscan.io/address/" + contractAddress);
 
-        log.info("Value stored in remote smart contract: " + token1.balanceOf(contractAddress).send());
+/*        log.info("Value stored in remote smart contract: " + token1.balanceOf(contractAddress).send());
         log.info("Value stored in remote smart contract: " + token1.balanceOf(credentials.getAddress()).send());
-        log.info("transferring to  0x238Db2BCE0a7D50044F200375E56271308C45B98");
+        log.info("transferring to  0x238Db2BCE0a7D50044F200375E56271308C45B98");*/
+
         
-        log.info("Deploying crowd sale");
+        
+        System.out.println("====DEPLOYING CROWD SALE===================================================================================");
+
         Crowdsale crowd = Crowdsale.deploy(
                 web3j, credentials,
                 ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT, credentials.getAddress(),
                 BigInteger.valueOf(50), BigInteger.valueOf(30), BigInteger.valueOf(100), contractAddress).send();
         
 
-        log.info("crowd sale deployed to address " + crowd.getContractAddress());*/
+        log.info("crowd sale deployed to address " + crowd.getContractAddress());
+
+
 
         
         
+        System.out.println("====GETTING TRANSACTION===================================================================================");
+        
         EthGetTransactionReceipt tr = web3j.ethGetTransactionReceipt("0xf00225afafd5eedc4a6782440509fa0dcc4cea507c1a4e42f1ad2f931797b24e").send();
   	 
-        System.out.println(tr.getTransactionReceipt().get().toString());
+        log.info(tr.getTransactionReceipt().get().toString());
         
         
+        
+        
+        
+        
+        System.out.println("====GETTING BLOCK===================================================================================");
+
         EthBlock eb = web3j.ethGetBlockByNumber(DefaultBlockParameter.valueOf(tr.getTransactionReceipt().get().getBlockNumber()), true).send();
 
         
