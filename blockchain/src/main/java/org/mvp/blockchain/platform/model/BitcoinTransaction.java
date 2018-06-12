@@ -116,6 +116,9 @@ public class BitcoinTransaction {
 	public String toString() {
 		return "BitcoinTransaction [transactionId=" + transactionId + ", transactionIndex=" + transactionIndex
 				+ ", blockHeight=" + blockHeight + ", doubleSpend=" + doubleSpend + ", size=" + size + ", weight="
-				+ weight + ", createDateTime=" + createDateTime + ", outputs=" + outputs + ", inputs=" + inputs + "]";
+				+ weight + ", createDateTime=" + createDateTime + ", transactionFee=" + transactionFee + ", outputs="
+				+ outputs + ", inputs=" + inputs + "]";
 	}
+
+	
 }

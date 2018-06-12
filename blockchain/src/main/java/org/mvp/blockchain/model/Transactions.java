@@ -1,5 +1,7 @@
 package org.mvp.blockchain.model;
 
+import java.math.BigDecimal;
+
 import com.google.gson.annotations.SerializedName;
 
 public class Transactions {
@@ -58,6 +60,10 @@ public class Transactions {
 
 	public String getFee() {
 		return fee;
+	}
+
+	public BigDecimal getAbsoluteFee() {
+		return BigDecimal.valueOf(Math.abs(Double.valueOf(fee)));
 	}
 
 	public void setFee(String fee) {
