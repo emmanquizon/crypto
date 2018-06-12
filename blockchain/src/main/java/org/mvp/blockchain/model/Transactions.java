@@ -63,4 +63,12 @@ public class Transactions {
 	public void setFee(String fee) {
 		this.fee = fee;
 	}
+
+	@Override
+	public String toString() {
+		return "Transactions [txId=" + txId + ", time=" + time + ", address=" + address + ", type=" + type + ", amount="
+				+ amount + ", fee=" + fee + "]";
+	}
+	
+	
 }
