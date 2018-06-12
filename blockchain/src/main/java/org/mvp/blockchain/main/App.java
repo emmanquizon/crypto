@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.mvp.blockchain.bitcoin.BitcoinService;
 import org.mvp.blockchain.model.Transactions;
 import org.mvp.blockchain.utility.CsvToJson;
 
@@ -28,11 +29,12 @@ public class App {
 			data = CsvToJson.readObjectsFromCsv(input);
 			JsonParser jsonParser = new JsonParser();
 			JsonArray arrayFromString = jsonParser.parse(gson.toJson(data)).getAsJsonArray();
-			List<Transactions> transactionList = new ArrayList<>();
+			List<Transactions> transactionList = new ArrayList<Transactions>();
 			for(JsonElement json : arrayFromString) {
 				transactionList.add(gson.fromJson(json, Transactions.class));
 			}
-			System.out.println(transactionList);
+			BitcoinService bitcoinService = new BitcoinService();
+			System.out.println(bitcoinService.rawtx(transactionList.get(0).getTxId()));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
