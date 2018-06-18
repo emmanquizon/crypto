@@ -4,10 +4,11 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 const client = require('./client');
+require('./upload2files.js');
 // end::vars[]
 
 // tag::app[]
-class App extends React.Component {
+/* class App extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -48,6 +49,9 @@ class EmployeeList extends React.Component{
 		)
 	}
 }
+
+
+
 // end::employee-list[]
 
 // tag::employee[]
@@ -62,12 +66,9 @@ class Employee extends React.Component{
 		)
 	}
 }
-// end::employee[]
+// end::employee[] */
 
 // tag::render[]
-ReactDOM.render(
-	<App />,
-	document.getElementById('react')
-)
+
 // end::render[]
 
