@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Implementation-Title: React.js and Spring Data REST - Basic
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: jeriel.mercado
+Implementation-Vendor-Id: com.greglturnquist
+Build-Jdk: 1.8.0_171
+Implementation-URL: http://projects.spring.io/spring-boot/react-and-sp
+ ring-data-rest-basic/
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+
